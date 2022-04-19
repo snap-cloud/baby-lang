@@ -1,0 +1,481 @@
+\input texinfo
+@documentencoding UTF-8
+
+@ifnottex
+@paragraphindent 0
+@end ifnottex
+@titlepage
+@title “Why Do We Have to Learn This Baby Language?”
+@end titlepage
+
+@node Top
+@top “Why Do We Have to Learn This Baby Language?”
+
+Brian Harvey, Teaching Professor Emeritus, University of California,
+Berkeley
+
+I get it. You're a teenager, it's the first day of what was billed as a
+serious computer science course, and you're confronted with
+drag-and-drop blocks in primary colors. You've seen this before, back
+when your age had only one digit, and you played around with
+@uref{https://scratch.mit.edu/,Scratch}. Been there, done that.
+
+But Snap@emph{!} (Build Your Own Blocks) isn't Scratch. It's a very
+serious programming language, in disguise. The reason for the disguise
+is to avoid the way most programming courses spend most of their time
+and effort: on the details of the @emph{notation} used by whatever
+programming language they choose. Here's the classic example: In your
+“grownup” programming language you write
+
+some stuff; some more stuff; and yet more stuff@strong{;}
+
+@image{media/image1,1.875in,0.875in,,png}These are three instructions to
+the computer, with semicolons in between. Now, what about that red
+semicolon at the end? If the language is Java, C, or C++, that semicolon
+is @emph{required.} If it's Perl, Pascal, or PL/I, that semicolon is
+@emph{forbidden.} Not exactly easy to learn. But if, instead, the code
+looks like this:
+
+then there's no need to remember punctuation rules. The visual layout of
+the code @emph{is} the notation.
+
+And, of course, there's a benefit to following the visual design of
+Scratch: Many kids have grown up with Scratch, and so they
+can---@emph{you} can---dive right in and use the parts of Snap@emph{!}
+that @emph{are} like Scratch, and then learn the new parts.
+
+Snap@emph{!} is an extended reimplementation of Scratch featuring first
+class procedures, first class lists, first class sprites with
+inheritance, and first class costumes and sounds. (What does “first
+class” mean? Wait until page 4.) An earlier version, BYOB, was a
+modification of the Scratch 1.4 source code, but the current version is
+an entirely separate program, even though its user interface looks like
+Scratch 1.4 and it includes almost all of the Scratch 1.4 primitive
+blocks. BYOB was originally developed by Jens Mönig; as of BYOB 3.0, I
+joined as co-developer. (The code is still almost all written by Jens; I
+have contributed to the design, libraries, and documentation, as well as
+online mentoring of Snap@emph{!} users.)
+
+Scratch has been phenomenally successful at introducing young people to
+computer programming; part of that success has been the detailed,
+thoughtful design of each small piece of the language. In particular,
+they decided to @emph{leave out} some features, to avoid confusing young
+users. The tl;dr explanation of Snap@emph{!} is that we added those
+missing features. Snap@emph{!} was designed to teach computer science
+courses to teenagers, while Scratch was designed to pull in younger
+children. A design choice may be good for the Scratch target audience,
+but not for the Snap@emph{!} target audience, or vice versa. In every
+case, the Scratch Team was aware of the possibilities that they decided
+to omit. And from the beginning, don't forget, Scratch has had parallel
+processing, with multiple scripts and sprites all running at once. This
+is a significant Big Idea that isn't so readily usable in “grownup”
+languages.
+
+@strong{Build Your Own Blocks}
+
+@image{media/image2,6.58472in,2.07708in,,png}The ability to build custom
+blocks was the first goal of BYOB, as reflected in its name. A limited
+version of this capability, allowing only command blocks, later became
+part of Scratch 2.0.
+
+@image{media/image8,1.38889in,3.21667in,,png}
+
+When you start to make a custom block, you select its palette color, any
+of the standard ones or a gray “Other” category, and its shape (command,
+reporter, or predicate). Like a variable, the block can belong to one
+sprite or be usable by any sprite. After you've made those choices,
+Snap@emph{!} opens a @emph{block editor} window, like the scripting area
+but just for this one block definition. After you've finished, the
+definition is not visible (although you can bring back the block editor,
+or keep it open while you debug the block), but the block is now found
+in the palette.
+
+This is very different from the Scratch custom block interface. In
+Scratch, all custom blocks are found in their own palette category (“My
+Blocks”), and the scripts that define the blocks remain visible in the
+scripting area. It's not that one of these interfaces is “right” and the
+other “wrong,” but they do reflect very different ideas about how custom
+blocks will be used.
+
+The Scratch design treats a custom block as @emph{unusual,} very
+different from a primitive block. Scratch keeps block definitions
+visible in the scripting area so that all of your code is visible to
+you. But this is practical only if you define a small number of custom
+blocks. If you have 40 custom blocks in a project, your scripting area
+will be unmanageable.
+
+@image{media/image10,2.925in,0.33333in,,png}The Snap@emph{!} design
+tries to make custom blocks @emph{ordinary,} just like primitive blocks;
+ideally, once you've written a block, you can forget it's homemade. You
+can have as many of them as you want, without filling up your scripting
+area. This is important not just to keep your screen neat, but also to
+emphasize the idea of @emph{abstraction,} perhaps the central idea in
+computer science: You write programs in an environment full of
+procedures that let you think about the things you want to do, rather
+than about how to implement them. You can @emph{extend} Snap@emph{!}
+with a block library, a collection of blocks for a particular purpose,
+written in Snap@emph{!} itself. For example, below the abs block in the
+picture above are a collection of blocks that implement the idea of a
+@emph{sentence:} a text such as “I am the walrus” is treated as four
+words, rather than 15 characters. “I am the walrus ” is the same
+sentence, even though it's a different text string. The library has
+about a dozen blocks for tasks such as this one:
+
+Inside that block are some ugly details about looking for space
+characters to work out where the last word is in the text. But you don't
+have to @emph{read} those ugly details; you want to find the last word
+of a text, so you use that block, and it works.
+
+@strong{Recursion.} The ability to name a script by making a block out
+of it isn't just important for neatness and code reuse. It enables the
+block to use @emph{itself} to solve a smaller subproblem. The classic
+example is a fractal tree. Here's the program and the result of running
+it:
+
+@image{media/image11,6.46875in,3.62708in,,png}(The program draws in all
+one color, but the picture is colored here to show you how a tree
+includes three smaller trees, drawn by the three recursive invocations:
+first orange, then blue, then green.)
+
+@strong{Nested Sprites}
+
+@image{media/image15,5.60903in,1.55694in,,png}Snap@emph{!} gives you the
+ability to make a collection of sprites that move together. The
+canonical example is a skeleton in which each bone is attached to one
+closer to the spine; the entire skeleton can rotate together, or a
+particular bone can rotate relative to the whole.
+
+@image{media/image16,1.51389in,0.69444in,,png}@strong{@*
+}
+
+@strong{First Class Lists}
+
+A data type is @emph{first class} in a language if it can be used in all
+the same ways as any other data type. For example, in Scratch it's easy
+to make a list of numbers, but you can't make a list of @emph{lists};
+numbers are first class, but lists aren't. One of the slogans of
+Snap@emph{!} is “Everything first class.” In Scratch a list is
+essentially a kind of variable: It has a name and a value. The only
+difference is that the value has sub-values (the items). Scratch
+provides a red oval for the list, like the orange one for a variable,
+but the value it reports isn't the actual list; it's a @emph{string,}
+the concatenation of all the items, separated by spaces. This works
+because only strings and numbers can be items in a Scratch list.
+
+@image{media/image17,6.00667in,1.06958in,,png}Scratch lists combine two
+capabilities that are logically separate. The main capability of a list
+is that it can add, change, delete, and report items. The second
+capability is associating a name with the list, but that should instead
+be the job of an ordinary variable. If you want a list with items
+“Yakko,” “Wakko,” and “Dot,” and you want to call the list “Animaniacs,”
+you should be able to say
+
+@image{media/image18,3.275in,0.35in,,png}You can build a database as a
+@emph{list of lists:}
+
+@image{media/image19,4.49306in,1.14236in,,png}You can implement other
+data structures, such as a dictionary:
+
+@image{media/image20,4.29167in,0.60417in,,png}
+
+@image{media/image21,0.65625in,0.25in,,png}@image{media/image22,0.60417in,0.23958in,,png}@image{media/image23,0.60417in,0.23958in,,png}@strong{First
+Class Procedures}
+
+@image{media/image24,5.46597in,0.59375in,,png}First class lists are all
+you need to invent any data structure. But we'd also like to be able to
+invent a new @emph{control} structure---maybe you want repeat while
+instead of repeat until, for example. For that we need @emph{procedures}
+(blocks and scripts) as first class data. The gray rings above make that
+possible. A picture is worth 1000 words:
+
+@image{media/image28,0.9in,0.225in,,png}On the left, clicking the
+unringed 2+3 gives 5.
+
+On the right, putting 2+3 in a ring gives @emph{@strong{the block
+itself.}}
+
+The reason to create a ringed procedure is that later you'll want to
+call it:
+
+@image{media/image29,6.45208in,2.57569in,,png}@image{media/image35,4.13472in,0.30208in,,png}Users
+can create their own control structures, e.g., abstracting a repeated
+call of a function for each item of a list:
+
+When reading the map example, did you understand right away that each
+list item is plugged into
+
+@image{media/image39,0.84167in,0.225in,,png}the empty slot in the block?
+Elementary school teachers all know that if you show an
+
+eight-year-old “@emph{x}+3=7” and ask “what's @emph{x}?” you're likely
+to get a blank stare, but if you show the same kid “ ⃞   +3=7” and ask
+“what number goes in the square?” you're very likely to hear “four.”
+Snap@emph{!} uses that knowledge in the design of the notation for
+functions. When you call a gray-ringed function with an input, call
+looks for an empty input slot inside the ring, and that's where the
+input value is inserted. This notation makes simple function calling
+obvious, in the Scratch spirit of trying to use the visual
+representation to make ideas obvious. (For non-simple cases, you can
+also use explicit formal parameters.)
+
+@strong{Hyperblocks: First Class Vectors and Matrices}
+
+@image{media/image40,3.42in,1.23in,,png}But there's a simpler way to do
+arithmetic on lists of numbers:
+
+@image{media/image41,4.37in,1.24in,,png}Most of the blocks that normally
+expect single numbers or strings (@emph{scalars}) as inputs have been
+extended to understand lists as inputs too, applying the underlying
+scalar operation to each item of the list. If more than one input is a
+list, the lists are traversed in parallel:
+
+A list of numbers is a @emph{vector;} a list of vectors is a
+@emph{matrix.} We took these ideas from the language APL.
+
+@strong{Media Computation: First Class Costumes and Sounds}
+
+First class vectors and matrices enable fast media computation. So, for
+example, here's our mascot Alonzo: @image{media/image42,0.32in,0.42in,A
+picture containing clipart Description automatically generated,png} And
+here's what he looks like if we remove the green component from all his
+pixels:
+
+@image{media/image43,6.5in,0.55833in,,png}
+
+(Each pixel is an RGBA vector; pixels of costume reports a matrix 4 wide
+by a bazillion tall.) You can draw costumes programmatically; write a
+program like
+
+@image{media/image44,1.55in,1.04in,Graphical user interface, text,
+application, chat or text message Description automatically
+generated,png}@image{media/image45,1.3in,1.07986in,A picture containing
+wire, outdoor object Description automatically generated,png}
+
+and then you can get the drawing as a costume:
+
+@image{media/image46,2.41667in,0.86111in,Graphical user interface, text,
+application, chat or text message Description automatically
+generated,png}
+
+(The thumbnail in the speech balloon is reduced in size and precision,
+but the actual costume is exact.)
+
+@image{media/image47,2.34444in,1.50833in,,png}
+
+@strong{First Class Sprites with Inheritance}
+
+Object oriented programming is a style based around the abstraction
+@emph{object:} a collection of data and methods (procedures, which in
+Snap@emph{!} are just more data) that you interact with by sending it a
+@emph{message} (just a name, maybe in the form of a text string, and
+perhaps additional inputs). The object responds to the message by
+carrying out a method, which may or may not report a value back to the
+asker. Some people emphasize the @emph{data hiding} aspect of OOP
+(because each object has local variables that other objects can access
+only by sending request messages to the owning object) while others
+emphasize the @emph{simulation} aspect (in which each object abstractly
+represents something in the world, and the interactions of objects in
+the program model real interactions of real people or things). Data
+hiding is important for large multi-programmer industrial projects, but
+for Snap@emph{!} users it's the simulation aspect that's important. The
+Snap@emph{!} approach is therefore less restrictive than that of some
+other OOP languages; we give objects easy access to each others' data
+and methods.
+
+Scratch provides a very natural set of objects, namely, sprites. Object
+oriented programming rests on three legs; here's how they apply to
+sprites:
+
+@itemize
+@item
+@strong{Persistent local state.} An object must be able to remember its
+history from one action to the next, in variables whose names are
+private to that object. Scratch sprites have this, in the form of “for
+this sprite only” variables.
+
+@item
+@strong{Message passing.} One object has to be able to ask another
+object to do something, by sending it a message. Scratch doesn't exactly
+have this capability, but a sprite can broadcast a message to @emph{all}
+sprites. Snap@emph{!} adds true message passing, in which messages can
+be sent to individual sprites. They can take the form of blocks or
+scripts, which are carried out using the local blocks and variables of
+the receiver.
+
+@item
+@image{media/image48,1.475in,0.23125in,,png}@strong{Inheritance.} It's
+very common for two or more objects to share some methods (local
+procedures). Object oriented programming would be hopelessly complicated
+if the methods had to be duplicated by hand in each object. So object
+oriented languages provide a way for one object to @emph{inherit}
+methods and data from another. Starting in Scratch 2.0, there is a
+restricted form of inheritance: It's possible to “clone” a sprite; the
+resulting sprite is a @emph{copy} of the original, and is temporary;
+when the program stops running, the temporary clones are deleted.
+Temporary clones are good for things like the bricks in a Breakout game;
+they all have the same behavior, just different positions, and can be
+recreated at the start of each new game. But sometimes a project needs
+@emph{permanent} clones; one example would be the four ghosts in a
+Pacman game, each of which has a slightly different behavior (methods).
+Snap@emph{!} provides both kinds of cloning: Clones created in a
+program, using the
+
+@end itemize
+
+@quotation
+@image{media/image49,1.3625in,0.175in,,png}block or, since sprites are
+first class data in Snap@emph{!}, the new reporter, are by default
+temporary. Clones created from the user interface, e.g., by
+right-clicking on a sprite icon in the sprite corral and choosing the
+“clone” option from the context menu, are by default permanent; they
+appear in the sprite corral, are independently editable, and are saved
+with the project.
+@end quotation
+A Snap@emph{!} clone is @emph{not} a @emph{copy} of its parent; it
+actually shares the attributes of the parent. So, for example, if a
+costume of the parent is deleted, it's gone in the child also. More
+importantly, changes to a parent's methods are immediately seen in the
+behavior of the children. However, if something is changed @emph{in the
+child,} then the connection of that attribute with the parent is broken,
+and the child has a separate one of whatever it is. If the child imports
+a new costume, its entire wardrobe (the list of all its costumes) is
+copied from the parent, then the new costume is added, and thereafter
+the two sprites are independent with respect to costumes.
+
+@image{media/image50,2.00694in,0.75694in,,png}@image{media/image51,1.40972in,0.72222in,,png}It
+could be confusing that a child shares some attributes of its parent but
+not others. To help avoid this confusion, inherited attributes
+represented by palette blocks are @emph{ghosted} in the child's palette
+and in variable watchers:
+
+@image{media/image52,2.11111in,0.5in,,png}@image{media/image53,0.8125in,0.40972in,,png}@image{media/image54,1.44444in,1.08333in,,png}
+
+This is another example of extending, to more advanced computer science
+ideas, the Scratch goal of using subtle visual prompts to help explain
+an idea.
+
+@emph{Prototyping vs. Class/Instance OOP}
+
+Readers who have programmed in class/instance languages may feel that
+what's described here isn't OOP. But classes aren't necessary, and are
+actually harmful in a dynamic, interpreted language that encourages
+tinkering. Class/instance programmers typically design their entire
+class hierarchy before actually writing code. That's an appropriate
+discipline for a large group of programmers working on the same program,
+but not for one kid designing a project on the fly. What the kid wants
+to do is build, for example, a dog sprite, and program it with behaviors
+similar to those of his or her pet Cocker Spaniel. @emph{Then} the kid
+decides to add a Rottweiler to the project. It should inherit most of
+the behaviors of the Cocker Spaniel, but with a few differences. This
+OOP structure is called @emph{prototyping} or @emph{prototype-based
+OOP.}
+
+@image{media/image55,0.5in,0.25833in,,png}If you really want classes,
+make a sprite, give it children, then the parent. The parent is then
+effectively a class.
+
+Another way in which this OOP design is nontraditional is that it uses
+blocks (procedures) as messages, and @emph{any} block can be used, not
+just the ones that the receiver has declared as public methods. As
+explained earlier, in the Snap@emph{!} design, data hiding is less
+important than simulation, the use of objects as metaphors for some real
+system of agents.
+
+@strong{First Class Continuations}
+
+Prior to joining the Snap@emph{!} project, I had spent 20 years teaching
+computer science using the best computer science book ever written,
+@uref{http://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book.html,@emph{Structure
+and Interpretation of Computer Programs}} (@emph{SICP}). That course
+uses the Scheme programming language, although it's not @emph{about}
+Scheme, because that's the language that provides the greatest
+versatility in supporting different programming styles with the least
+amount of syntax to get in the way. Scheme has been the model for
+BYOB/Snap@emph{!} language design since BYOB 3.0. Another of our slogans
+is @uref{https://youtube.com/watch?v=wtUMvx9mvm4,“Snap@emph{@strong{!}}
+is Scheme disguised as Scratch.”}
+
+BYOB 3.0 was perhaps 90% of a Scheme implementation, enough to teach a
+@emph{SICP}-based course, but missing two main capabilities. One,
+macros, has been @emph{half}-implemented since BYOB 3.0, namely the
+ability for a custom block to have unevaluated inputs. (The other half,
+the ability to inject code into the caller of the block, is still to
+come.) The second big advanced capability is first class continuations.
+
+The @emph{continuation} of a block in a script is the part of the
+computation that remains to be done when that block has been run. For a
+command block, this generally means the blocks below it in the script
+(plus whatever remains of the script that called this block, and so on).
+For a reporter, it means the block to which this block provides an
+input, plus whatever comes below it.
+
+@image{media/image56,4.79375in,1.16736in,,png}Continuations themselves
+are not a special feature of Scheme. Any part of a computation, in
+@emph{any} language, has a continuation---whatever is left to do after
+it finishes. But in most languages, the programmer isn't encouraged to
+think of the continuation as a @emph{thing,} although the implementor of
+the programming language does think about continuations. What's special
+in Scheme is that it treats continuations as first class data. Giving
+the programmer access to continuations allows users to write any control
+structure; the most common examples are nonlocal exit (catch and throw
+in the Snap@emph{!} tools library) and a thread scheduler.
+
+@strong{@*
+}
+
+@strong{Metaprogramming: Scripts as Data}
+
+@image{media/image59,2.75972in,2.45972in,,png}@image{media/image60,3.59in,0.98in,,png}@image{media/image61,1.45in,1.3in,,png}@image{media/image62,6.50988in,1.19in,,png}@image{media/image63,6.49774in,2.79in,,png}@image{media/image64,3.4in,0.97in,,png}A
+few pictures, worth 1000 words each, about how we can write programs to
+manipulate programs: @strong{@*
+}
+
+@strong{Linked lists}
+
+The data structure that Scratch (and therefore Snap@emph{!}) calls a
+“list” is actually implemented as a @emph{dynamic array,} i.e., a
+contiguous block of memory that is expanded by copying as needed. A
+@emph{linked list} is a different data structure made out of
+@emph{pairs;} each pair contains one list item plus a pointer to another
+pair, so the entire list contains as many pairs as items, and they don't
+have to be contiguous in memory.
+
+@image{media/image65,0.8in,0.18333in,,png}For example, given a list of
+numbers , the goal is to make a list in which every item is two
+
+times the corresponding item of the input.
+
+@image{media/image66,6.07083in,1.47778in,,png}@image{media/image68,2.39583in,0.29861in,,png}
+
+In the iterative version, the add command block extends the same list by
+one item each time it's invoked. This kind of list access is fastest
+with dynamic arrays.
+
+In the recursive version, the in front of block creates a new pair,
+whose left half is a new item, and whose right half is (a pointer to)
+the result of the recursive call, namely a sublist of the result. This
+is fastest with linked lists.
+
+It is a goal of Snap@emph{!} that users not have to know anything about
+data structures, but should still have their project run as fast as
+possible. Therefore, Snap@emph{!} automatically creates linked lists
+when the reporters (item, all but first of, in front of) are used, but
+creates dynamic arrays when the commands (add, insert, replace, delete)
+are used.
+
+@strong{JavaScript in custom blocks}
+
+@image{media/image69,2.65in,0.225in,,png}Do you @emph{still} think you
+know everything Snap@emph{!} has to teach? In that case, you'll like the
+
+@image{media/image70,4.4375in,1.76389in,,png}block. In the following
+example, never mind right now what it actually does; instead, notice how
+inputs are passed from the Snap@emph{!} environment to the JavaScript
+world.
+
+This example comes from a text-to-speech library. Many Snap@emph{!}
+libraries have been written by advanced users; writing libraries is a
+way you can explore JavaScript programming while remaining in, and
+contributing to, the Snap@emph{!} community.
+
+@bye
